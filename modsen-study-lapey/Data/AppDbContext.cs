@@ -16,11 +16,11 @@ public class AppDbContext : DbContext
     {
         var server = "localhost";
         var port = "5432";
-        var name = "postgres";
+        var dbname = "postgres";
         var user = "admin";
         var pass = "123";
 
-        optionsBuilder.UseNpgsql($"Host={server};Port={port};Database={name};" +
+        optionsBuilder.UseNpgsql($"Host={server};Port={port};Database={dbname};" +
                                  $"Username={user};Password={pass}");
     } 
 }

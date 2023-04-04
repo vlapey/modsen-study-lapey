@@ -48,7 +48,7 @@ namespace modsen_study_lapey.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("IBAN")
+                    b.Property<string>("Iban")
                         .IsRequired()
                         .HasColumnType("text");
 
