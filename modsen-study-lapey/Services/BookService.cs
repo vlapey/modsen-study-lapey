@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using modsen_study_lapey.Data;
 using modsen_study_lapey.Models;
 using modsen_study_lapey.Services.Interfaces;

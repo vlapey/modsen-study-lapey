@@ -90,4 +90,17 @@ public class BookController : ControllerBase
         
         return NoContent();
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
+        if (book is null)
+        {
+            return BadRequest("Invalid id");
+        }
+        _context.Books.Remove(book);
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 }
