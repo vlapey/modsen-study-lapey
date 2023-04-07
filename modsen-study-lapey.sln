@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "modsen-study-lapey", "modse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{D0B9C3ED-807A-4A0D-8A1C-2059ECAD7E3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{431B3C3E-5A90-4874-AEAD-99A79E1DD424}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{18B092F7-56BD-4028-B780-562A78742A61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{D0B9C3ED-807A-4A0D-8A1C-2059ECAD7E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0B9C3ED-807A-4A0D-8A1C-2059ECAD7E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0B9C3ED-807A-4A0D-8A1C-2059ECAD7E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431B3C3E-5A90-4874-AEAD-99A79E1DD424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431B3C3E-5A90-4874-AEAD-99A79E1DD424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431B3C3E-5A90-4874-AEAD-99A79E1DD424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431B3C3E-5A90-4874-AEAD-99A79E1DD424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B092F7-56BD-4028-B780-562A78742A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B092F7-56BD-4028-B780-562A78742A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B092F7-56BD-4028-B780-562A78742A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B092F7-56BD-4028-B780-562A78742A61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

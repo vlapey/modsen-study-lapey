@@ -1,7 +1,8 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using modsen_study_lapey.Data;
 using Entities.Models;
+using modsen_study_lapey.Dto;
+using Services.Interfaces;
 
 namespace modsen_study_lapey.Controllers;
 
@@ -10,97 +11,90 @@ namespace modsen_study_lapey.Controllers;
 public class BookController : ControllerBase
 {
 
-    private readonly AppDbContext _context;
-
-    public BookController(AppDbContext context)
+    private readonly IBookService _bookService;
+    private readonly IMapper _mapper;
+    
+    public BookController(IBookService bookService, IMapper mapper)
     {
-        _context = context;
+        _bookService = bookService;
+        _mapper = mapper;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetAllBooks()
     {
-        var books = await _context.Books.ToListAsync();
-        return Ok(books);
+        var books = await _bookService.GetBooks();
+        var bookDto = _mapper.Map<List<BookDto>>(books);
+        return Ok(bookDto);
     }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetBookById(int id)
     {
-        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
-        return Ok(book);
+        var book = await _bookService.GetBookById(id);
+        
+        if (book is null)
+        {
+            return NotFound();
+        }
+        
+        var bookDto = _mapper.Map<BookDto>(book);
+        return Ok(bookDto);
     }
 
-    [HttpGet("{Iban}")]
-    public async Task<IActionResult> GetBookByIban(string Iban)
+    [HttpGet("{iban}")]
+    public async Task<IActionResult> GetBookByIban(string iban)
     {
-        var book = await _context.Books.FirstOrDefaultAsync(x => x.Iban == Iban);
-        return Ok(book);
+        var book = await _bookService.GetBookByIban(iban);
+        
+        if (book is null)
+        {
+            return NotFound();
+        }
+        
+        var bookDto = _mapper.Map<BookDto>(book);
+        return Ok(bookDto);
     }
-
+    
     [HttpPost]
-    public async Task<IActionResult> CreateBook(Book book)
+    public async Task<IActionResult> CreateBook(CreateBookDto bookDto)
     {
-        await _context.Books.AddAsync(book);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction("GetAllBooks", book.Id, book);
+        var book = _mapper.Map<Book>(bookDto);
+        var createdBook = await _bookService.CreateBook(book);
+        
+        if (createdBook is null)
+        {
+            return BadRequest();
+        }
+        
+        var createdBookDto = _mapper.Map<BookDto>(createdBook);
+        return Ok(createdBookDto);
     }
-
+    
     [HttpPatch]
-    public async Task<IActionResult> Patch(int id, Book book)
+    public async Task<IActionResult> UpdateBook(BookDto bookDto)
     {
-        var newBook = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
+        var book = _mapper.Map<Book>(bookDto);
+        var updatedBook = await _bookService.UpdateBook(book);
         
-        book.Id = id;
-        
-        if (newBook is null)
+        if (updatedBook is null)
         {
-            return BadRequest("Invalid id");
-        }
-
-        if (!String.IsNullOrEmpty(book.Iban))
-        {
-            newBook.Iban = book.Iban;
+            return BadRequest();
         }
         
-        if (!String.IsNullOrEmpty(book.Name))
-        {
-            newBook.Name = book.Name;
-        }
-        
-        if (!String.IsNullOrEmpty(book.Genre))
-        {
-            newBook.Genre = book.Genre;
-        }
-        
-        if (!String.IsNullOrEmpty(book.Description))
-        {
-            newBook.Description = book.Description;
-        }
-        
-        if (!String.IsNullOrEmpty(book.Author))
-        {
-            newBook.Author = book.Author;
-        }
-
-        newBook.BookTaken = book.BookTaken;
-        newBook.BookWillBeReturned = book.BookWillBeReturned;
-        
-        await _context.SaveChangesAsync();
-        
-        return NoContent();
+        var updatedBookDto = _mapper.Map<BookDto>(updatedBook);
+        return Ok(updatedBookDto);
     }
-
+    
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
-        if (book is null)
+        var res = await _bookService.DeleteBook(id);
+        if (res == false)
         {
-            return BadRequest("Invalid id");
+            return BadRequest();
         }
-        _context.Books.Remove(book);
-        await _context.SaveChangesAsync();
-        return NoContent();
+
+        return Ok();
     }
 }

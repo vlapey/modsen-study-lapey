@@ -1,6 +1,6 @@
-namespace Entities.Dto;
+namespace modsen_study_lapey.Dto;
 
-public class UpdateBookDto
+public class BookDto
 {
     public int Id { get; set; }
     public string Iban { get; set; }

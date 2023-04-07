@@ -1,4 +1,4 @@
-namespace Entities.Dto;
+namespace modsen_study_lapey.Dto;
 
 public class CreateBookDto
 {
