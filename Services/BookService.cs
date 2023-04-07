@@ -22,7 +22,7 @@ public class BookService : IBookService
 
     public Task<Book?> GetBookById(int id)
     {
-        var book = _appDbContext.Books.FirstOrDefaultAsync(book => book.Id == id);
+        var book = _appDbContext.Books.AsNoTracking().FirstOrDefaultAsync(book => book.Id == id);
         return book;
     }
 
@@ -36,16 +36,22 @@ public class BookService : IBookService
     {
         await _appDbContext.Books.AddAsync(book);
         await _appDbContext.SaveChangesAsync();
-        var createdEntity = await _appDbContext.Books.FirstOrDefaultAsync(bookEntity => bookEntity.Id == book.Id);
+        var createdEntity = await GetBookById(book.Id);
         return createdEntity;
     }
 
     public async Task<Book?> UpdateBook(Book book)
     {
+        var entity =  await GetBookById(book.Id);
+        
+        if (entity is null)
+        {
+            return null;
+        }
+        
         _appDbContext.Books.Update(book);
         await _appDbContext.SaveChangesAsync();
-        var updatedEntity = await _appDbContext.Books.FirstOrDefaultAsync(bookEntity => bookEntity.Id == book.Id);
-        return updatedEntity;
+        return book;
     }
 
     public async Task<bool> DeleteBook(int id)
