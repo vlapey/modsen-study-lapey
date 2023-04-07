@@ -24,7 +24,9 @@ public class BookController : ControllerBase
     public async Task<IActionResult> GetAllBooks()
     {
         var books = await _bookService.GetBooks();
+        
         var bookDto = _mapper.Map<List<BookDto>>(books);
+        
         return Ok(bookDto);
     }
 
@@ -39,6 +41,7 @@ public class BookController : ControllerBase
         }
         
         var bookDto = _mapper.Map<BookDto>(book);
+        
         return Ok(bookDto);
     }
 
@@ -53,6 +56,7 @@ public class BookController : ControllerBase
         }
         
         var bookDto = _mapper.Map<BookDto>(book);
+        
         return Ok(bookDto);
     }
     
@@ -60,6 +64,7 @@ public class BookController : ControllerBase
     public async Task<IActionResult> CreateBook(CreateBookDto bookDto)
     {
         var book = _mapper.Map<Book>(bookDto);
+        
         var createdBook = await _bookService.CreateBook(book);
         
         if (createdBook is null)
@@ -68,6 +73,7 @@ public class BookController : ControllerBase
         }
         
         var createdBookDto = _mapper.Map<BookDto>(createdBook);
+        
         return Ok(createdBookDto);
     }
     
@@ -75,6 +81,7 @@ public class BookController : ControllerBase
     public async Task<IActionResult> UpdateBook(BookDto bookDto)
     {
         var book = _mapper.Map<Book>(bookDto);
+        
         var updatedBook = await _bookService.UpdateBook(book);
         
         if (updatedBook is null)
@@ -83,6 +90,7 @@ public class BookController : ControllerBase
         }
         
         var updatedBookDto = _mapper.Map<BookDto>(updatedBook);
+        
         return Ok(updatedBookDto);
     }
     
@@ -90,6 +98,7 @@ public class BookController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var res = await _bookService.DeleteBook(id);
+        
         if (res == false)
         {
             return BadRequest();

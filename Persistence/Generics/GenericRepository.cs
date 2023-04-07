@@ -5,12 +5,11 @@ using Services.Interfaces.Persistence;
 
 namespace Persistence.Generics;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity
+public abstract class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity
 {
-
     private readonly AppDbContext _appDbContext;
-    
-    public GenericRepository(AppDbContext appDbContext)
+
+    protected GenericRepository(AppDbContext appDbContext)
     {
         _appDbContext = appDbContext;
     }
@@ -21,25 +20,39 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         {
             return await _appDbContext.Set<T>().ToListAsync();
         }
-
-        return await _appDbContext.Set<T>().Where(filter).ToListAsync();
+        
+        var items = await _appDbContext.Set<T>()
+            .Where(filter)
+            .ToListAsync();
+        
+        return items;
     }
     
     public async Task<T?> GetItemById(int id)
     {
-        return await _appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+        var item = await _appDbContext.Set<T>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.Id == id);
+        
+        return item;
     }
     
     public async Task<T?> GetItemByFilter(Expression<Func<T, bool>> filter)
     {
-        return await _appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(filter);
+        var item = await _appDbContext.Set<T>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(filter);
+        
+        return item;
     }
 
     public async Task<T?> CreateItem(T item)
     {
         await _appDbContext.Set<T>().AddAsync(item);
         await _appDbContext.SaveChangesAsync();
+        
         var createdEntity = await GetItemById(item.Id);
+        
         return createdEntity;
     }
 
@@ -54,12 +67,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         
         _appDbContext.Set<T>().Update(item);
         await _appDbContext.SaveChangesAsync();
+        
         return item;
     }
 
     public async Task<bool> DeleteItem(int id)
     {
-        var entity = await _appDbContext.Set<T>().FirstOrDefaultAsync(item => item.Id == id);
+        var entity = await _appDbContext.Set<T>()
+            .FirstOrDefaultAsync(item => item.Id == id);
         
         if (entity is null)
         {
@@ -68,6 +83,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         
         _appDbContext.Set<T>().Remove(entity);
         await _appDbContext.SaveChangesAsync();
+        
         return true;
     }
 }

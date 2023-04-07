@@ -16,35 +16,42 @@ public class BookService : IBookService
     public async Task<List<Book>> GetBooks()
     {
         var books = await _bookRepository.GetItems();
+        
         return books;
     }
 
     public Task<Book?> GetBookById(int id)
     {
         var book = _bookRepository.GetItemById(id);
+        
         return book;
     }
 
     public async Task<Book?> GetBookByIban(string iban)
     {
         var book = await _bookRepository.GetItemByFilter(item => item.Iban == iban);
+        
         return book;
     }
 
     public async Task<Book?> CreateBook(Book book)
     {
         var createdEntity = await _bookRepository.CreateItem(book);
+        
         return createdEntity;
     }
 
     public async Task<Book?> UpdateBook(Book book)
     {
         var updatedEntity =  await _bookRepository.UpdateItem(book);
+        
         return updatedEntity;
     }
 
     public async Task<bool> DeleteBook(int id)
     {
-        return await _bookRepository.DeleteItem(id);
+        var isSuccessful = await _bookRepository.DeleteItem(id);
+        
+        return isSuccessful;
     }
 }
