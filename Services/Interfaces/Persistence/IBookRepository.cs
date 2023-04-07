@@ -1,7 +1,6 @@
 using Entities.Models;
-using Persistence.Generics;
 
-namespace Persistence.Repositories;
+namespace Services.Interfaces.Persistence;
 
 public interface IBookRepository : IGenericRepository<Book>
 {

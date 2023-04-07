@@ -1,70 +1,50 @@
 using Entities.Models;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 using Services.Interfaces;
+using Services.Interfaces.Persistence;
 
 namespace Services;
 
 public class BookService : IBookService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly IBookRepository _bookRepository;
     
-    public BookService(AppDbContext appDbContext)
+    public BookService(IBookRepository bookRepository)
     {
-        _appDbContext = appDbContext;
+        _bookRepository = bookRepository;
     }
     
     public async Task<List<Book>> GetBooks()
     {
-        var books = await _appDbContext.Books.ToListAsync();
+        var books = await _bookRepository.GetItems();
         return books;
     }
 
     public Task<Book?> GetBookById(int id)
     {
-        var book = _appDbContext.Books.AsNoTracking().FirstOrDefaultAsync(book => book.Id == id);
+        var book = _bookRepository.GetItemById(id);
         return book;
     }
 
     public async Task<Book?> GetBookByIban(string iban)
     {
-        var book = await _appDbContext.Books.FirstOrDefaultAsync(book => book.Iban == iban);
+        var book = await _bookRepository.GetItemByFilter(item => item.Iban == iban);
         return book;
     }
 
     public async Task<Book?> CreateBook(Book book)
     {
-        await _appDbContext.Books.AddAsync(book);
-        await _appDbContext.SaveChangesAsync();
-        var createdEntity = await GetBookById(book.Id);
+        var createdEntity = await _bookRepository.CreateItem(book);
         return createdEntity;
     }
 
     public async Task<Book?> UpdateBook(Book book)
     {
-        var entity =  await GetBookById(book.Id);
-        
-        if (entity is null)
-        {
-            return null;
-        }
-        
-        _appDbContext.Books.Update(book);
-        await _appDbContext.SaveChangesAsync();
-        return book;
+        var updatedEntity =  await _bookRepository.UpdateItem(book);
+        return updatedEntity;
     }
 
     public async Task<bool> DeleteBook(int id)
     {
-        var entity = await _appDbContext.Books.FirstOrDefaultAsync(bookEntity => bookEntity.Id == id);
-        
-        if (entity is null)
-        {
-            return false;
-        }
-        
-        _appDbContext.Books.Remove(entity);
-        await _appDbContext.SaveChangesAsync();
-        return true;
+        return await _bookRepository.DeleteItem(id);
     }
 }

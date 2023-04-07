@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Services.Interfaces.Persistence;
 
 namespace Persistence.Generics;
 
@@ -13,14 +15,24 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         _appDbContext = appDbContext;
     }
     
-    public async Task<List<T>> GetItems()
+    public async Task<List<T>> GetItems(Expression<Func<T, bool>>? filter = null)
     {
-        return await _appDbContext.Set<T>().ToListAsync();
-    }
+        if (filter is null)
+        {
+            return await _appDbContext.Set<T>().ToListAsync();
+        }
 
+        return await _appDbContext.Set<T>().Where(filter).ToListAsync();
+    }
+    
     public async Task<T?> GetItemById(int id)
     {
         return await _appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+    }
+    
+    public async Task<T?> GetItemByFilter(Expression<Func<T, bool>> filter)
+    {
+        return await _appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(filter);
     }
 
     public async Task<T?> CreateItem(T item)
@@ -31,7 +43,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         return createdEntity;
     }
 
-    public async Task<T?> EditItem(T item)
+    public async Task<T?> UpdateItem(T item)
     {
         var entity =  await GetItemById(item.Id);
         

@@ -1,5 +1,6 @@
 using Entities.Models;
 using Persistence.Generics;
+using Services.Interfaces.Persistence;
 
 namespace Persistence.Repositories;
 
