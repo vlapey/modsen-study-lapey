@@ -1,5 +1,5 @@
 using System.Reflection;
-using modsen_study_lapey.Startup;
+using WebApi.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

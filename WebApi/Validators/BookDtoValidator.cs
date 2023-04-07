@@ -1,7 +1,7 @@
 using FluentValidation;
-using modsen_study_lapey.Dto;
+using WebApi.Dto;
 
-namespace modsen_study_lapey.Validators;
+namespace WebApi.Validators;
 
 public class BookDtoValidator : AbstractValidator<BookDto>
 {

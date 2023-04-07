@@ -1,10 +1,10 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Entities.Models;
-using modsen_study_lapey.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
+using WebApi.Dto;
 
-namespace modsen_study_lapey.Controllers;
+namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]/[action]")]

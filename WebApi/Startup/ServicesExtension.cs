@@ -1,7 +1,7 @@
 using Services;
 using Services.Interfaces;
 
-namespace modsen_study_lapey.Startup;
+namespace WebApi.Startup;
 
 public static class ServicesExtension
 {

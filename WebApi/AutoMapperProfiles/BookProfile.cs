@@ -1,8 +1,8 @@
 using AutoMapper;
 using Entities.Models;
-using modsen_study_lapey.Dto;
+using WebApi.Dto;
 
-namespace modsen_study_lapey.AutoMapperProfiles;
+namespace WebApi.AutoMapperProfiles;
 
 public class BookProfile : Profile
 {

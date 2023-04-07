@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "modsen-study-lapey", "modsen-study-lapey\modsen-study-lapey.csproj", "{CD11E9AB-FD30-4854-86B3-AA9E9073146D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{CD11E9AB-FD30-4854-86B3-AA9E9073146D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{D0B9C3ED-807A-4A0D-8A1C-2059ECAD7E3C}"
 EndProject

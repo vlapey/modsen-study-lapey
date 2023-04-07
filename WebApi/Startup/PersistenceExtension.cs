@@ -3,7 +3,7 @@ using Persistence;
 using Persistence.Repositories;
 using Services.Interfaces.Persistence;
 
-namespace modsen_study_lapey.Startup;
+namespace WebApi.Startup;
 
 public static class PersistenceExtension
 {
