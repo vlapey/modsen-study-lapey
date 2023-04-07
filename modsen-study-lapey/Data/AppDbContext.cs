@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using modsen_study_lapey.Models;
+using Entities.Models;
 
 namespace modsen_study_lapey.Data;
 

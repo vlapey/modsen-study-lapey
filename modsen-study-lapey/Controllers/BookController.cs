@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using modsen_study_lapey.Data;
-using modsen_study_lapey.Models;
+using Entities.Models;
 
 namespace modsen_study_lapey.Controllers;
 

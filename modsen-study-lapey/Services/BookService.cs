@@ -1,5 +1,5 @@
 using modsen_study_lapey.Data;
-using modsen_study_lapey.Models;
+using Entities.Models;
 using modsen_study_lapey.Services.Interfaces;
 
 namespace modsen_study_lapey.Services;
@@ -23,7 +23,7 @@ public class BookService : IBookService
         throw new NotImplementedException();
     }
 
-    public Book GetBookByIBAN()
+    public Book GetBookByIban()
     {
         throw new NotImplementedException();
     }
@@ -33,7 +33,7 @@ public class BookService : IBookService
         throw new NotImplementedException();
     }
 
-    public bool EditBook(Book book)
+    public bool UpdateBook(Book book)
     {
         throw new NotImplementedException();
     }

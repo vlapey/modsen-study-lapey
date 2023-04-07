@@ -1,4 +1,4 @@
-namespace modsen_study_lapey.Models;
+namespace Entities.Models;
 
 public class Book
 {
