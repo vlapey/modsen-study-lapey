@@ -1,6 +1,6 @@
 namespace Entities.Models;
 
-public class Book
+public class Book : IEntity
 {
     public int Id { get; set; }
     public string Iban { get; set; }
