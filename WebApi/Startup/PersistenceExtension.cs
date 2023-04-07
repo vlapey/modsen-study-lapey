@@ -14,4 +14,14 @@ public static class PersistenceExtension
         
         services.AddScoped<IBookRepository, BookRepository>();
     }
+    
+    public static async Task Migrate(this IApplicationBuilder app)
+    {
+        using var serviceScope = app.ApplicationServices
+            .GetRequiredService<IServiceScopeFactory>()
+            .CreateScope();
+
+        await using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+        await context?.Database.MigrateAsync()!;
+    }
 }
