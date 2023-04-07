@@ -1,7 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
 using Services;
 using Services.Interfaces;
 
-namespace WebApi.Startup;
+namespace ApplicationBuilder.Startup;
 
 public static class ServicesExtension
 {

@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using Persistence.Repositories;
 using Services.Interfaces.Persistence;
 
-namespace WebApi.Startup;
+namespace ApplicationBuilder.Startup;
 
 public static class PersistenceExtension
 {
