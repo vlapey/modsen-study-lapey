@@ -11,4 +11,11 @@ public class AppDbContext : DbContext
     {
 
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Book>().Property(p => p.Name).HasMaxLength(20);
+        modelBuilder.Entity<Book>().Property(p => p.Author).HasMaxLength(20);
+        base.OnModelCreating(modelBuilder);
+    }
 }
