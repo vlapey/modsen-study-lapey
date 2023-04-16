@@ -1,9 +1,11 @@
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityUserContext<IdentityUser>
 {
     public DbSet<Book> Books { get; set; }
 
