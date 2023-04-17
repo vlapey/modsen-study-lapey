@@ -1,4 +1,4 @@
-﻿namespace WebApi.Configurations;
+﻿namespace WebApi.Jwt;
 
 public class JwtConfig
 {

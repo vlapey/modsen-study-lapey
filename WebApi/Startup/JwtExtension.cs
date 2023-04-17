@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using WebApi.Configurations;
+using Persistence;
+using WebApi.Jwt;
 
 namespace WebApi.Startup;
 
@@ -31,5 +33,7 @@ public static class JwtExtension
                 ValidateLifetime = true
             };
         });
+        services.AddDefaultIdentity<IdentityUser>(options => 
+            options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<AppDbContext>();
     }
 }
