@@ -107,6 +107,6 @@ public class BookController : ControllerBase
             return BadRequest();
         }
 
-        return Ok();
+        return Ok("Deleted successfully");
     }
 }
