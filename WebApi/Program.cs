@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureServices();
 builder.Services.ConfigurePersistence(configuration);
 
+builder.Services.ConfigureJwt(configuration);
+
 var assembly = Assembly.GetExecutingAssembly();
 builder.Services.AddAutoMapper(assembly);
 
@@ -21,6 +23,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

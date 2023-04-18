@@ -1,11 +1,14 @@
 using AutoMapper;
 using Entities.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 using WebApi.Dto;
 
 namespace WebApi.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
 [Route("[controller]/[action]")]
 public class BookController : ControllerBase
@@ -30,7 +33,7 @@ public class BookController : ControllerBase
         return Ok(bookDto);
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet]
     public async Task<IActionResult> GetBookById(int id)
     {
         var book = await _bookService.GetBookById(id);
@@ -45,7 +48,7 @@ public class BookController : ControllerBase
         return Ok(bookDto);
     }
 
-    [HttpGet("{iban}")]
+    [HttpGet]
     public async Task<IActionResult> GetBookByIban(string iban)
     {
         var book = await _bookService.GetBookByIban(iban);
@@ -94,7 +97,7 @@ public class BookController : ControllerBase
         return Ok(updatedBookDto);
     }
     
-    [HttpDelete("{id:int}")]
+    [HttpDelete]
     public async Task<IActionResult> Delete(int id)
     {
         var res = await _bookService.DeleteBook(id);
@@ -104,6 +107,6 @@ public class BookController : ControllerBase
             return BadRequest();
         }
 
-        return Ok();
+        return Ok("Deleted successfully");
     }
 }
