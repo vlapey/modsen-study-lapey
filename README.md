@@ -1,16 +1,17 @@
 This ASP.NET project was written for Modsen as test task using following: 
 
 Technologies and Features:
-1. Entity Framework, 
-2. Migrations, 
-3. Docker, 
-4. EF Fluent API, 
-5. Fluent Validation, 
-6. AutoMapper, 
-7. JSON Web Token (JWT), 
-8. Extensions,
-9. Swagger,
-10. Git.
+1. .NET 6
+2. Entity Framework, 
+3. Migrations, 
+4. Docker, 
+5. EF Fluent API, 
+6. Fluent Validation, 
+7. AutoMapper, 
+8. JSON Web Token (JWT), 
+9. Extensions,
+10. Swagger,
+11. Git.
 
 Patterns:
 1. Onion Acrhitecture, 
