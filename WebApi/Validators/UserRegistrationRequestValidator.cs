@@ -13,6 +13,6 @@ public class UserRegistrationRequestValidator : AbstractValidator<UserRegistrati
             .NotEmpty()
             .MinimumLength(6)
             .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])(?=.*\d).+$")
-            .WithMessage("Password should contain at least 1 uppercase, lowercase, symbol");
+            .WithMessage("Password should contain at least 1 uppercase, lowercase, symbol, digit");
     }
 }
