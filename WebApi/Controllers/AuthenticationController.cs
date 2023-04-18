@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Dto;
-using WebApi.Jwt;
 
 namespace WebApi.Controllers;
 
@@ -25,122 +24,82 @@ public class AuthenticationController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register(UserRegistrationRequestDto requestDto)
     {
-        if (!ModelState.IsValid)
+        var user = await _userManager.FindByEmailAsync(requestDto.Email);
+
+        if (user is not null)
         {
-            return BadRequest();
+            return BadRequest("Email already exists");
         }
-        
-        var userExist = await _userManager.FindByEmailAsync(requestDto.Email);
-            
-            if (userExist is not null)
-            {
-                return BadRequest(new AuthResult()
-                {
-                    Result = false,
-                    Errors = new List<string>()
-                    {
-                        "Email already exists"
-                    }
-                });
-            }
 
-            var newUser = new IdentityUser()
-            {
-                Email = requestDto.Email,
-                UserName = requestDto.Email
-            };
-            
-            var isCreated = await _userManager.CreateAsync(newUser, requestDto.Password);
+        var newUser = new IdentityUser()
+        {
+            Email = requestDto.Email,
+            UserName = requestDto.Email
+        };
 
-            if (isCreated.Succeeded)
-            {
-                var token = GenerateJwtToken(newUser);
-                return Ok(new AuthResult()
-                {
-                    Result = true,
-                    Token = token
-                });
-            }
+        var identityResult = await _userManager.CreateAsync(newUser, requestDto.Password);
 
-            return BadRequest(new AuthResult()
-            {
-                Errors = new List<string>()
-                {
-                    "Server error"
-                },
-                Result = false
-            });
+        if (!identityResult.Succeeded)
+        {
+            return BadRequest("Identity result creation does not indicate success");
+        }
+
+        try
+        {
+            var token = GenerateJwtToken(newUser);
+            return Ok(token);
+        }
+        catch (Exception e)
+        {
+            return BadRequest("GenerateJwtToken does not indicate success");
+        }
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> Login(UserLoginRequestDto loginRequest) 
+    public async Task<IActionResult> Login(UserLoginRequestDto loginRequest)
     {
-        if (!ModelState.IsValid)
+        var user = await _userManager.FindByEmailAsync(loginRequest.Email);
+
+        if (user is null)
         {
-            return BadRequest(new AuthResult()
-            {
-                Errors = new List<string>()
-                {
-                    "Invalid payload"
-                },
-                Result = false
-            });
+            return BadRequest("Unable to find user");
         }
 
-        var existingUser = await _userManager.FindByEmailAsync(loginRequest.Email);
-
-        if (existingUser is null)
-        {
-            return BadRequest(new AuthResult()
-            {
-                Errors = new List<string>()
-                {
-                    "Invalid payload"
-                },
-                Result = false
-            });
-        }
-
-        var isCorrect = await _userManager.CheckPasswordAsync(existingUser ,loginRequest.Password);
+        var isCorrect = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
 
         if (!isCorrect)
         {
-            return BadRequest(new AuthResult()
-            {
-                Errors = new List<string>()
-                {
-                    "Invalid credentials"
-                },
-                Result = false
-            });
+            return BadRequest("Password does not match following user");
         }
 
-        var jwtToken = GenerateJwtToken(existingUser);
-
-        return Ok(new AuthResult()
+        try
         {
-            Token = jwtToken,
-            Result = true
-        });
+            var jwtToken = GenerateJwtToken(user);
+            return Ok(jwtToken);
+        }
+        catch (Exception e)
+        {
+            return BadRequest("GenerateJwtToken does not indicate success");
+        }
     }
 
     private string GenerateJwtToken(IdentityUser user)
     {
         var jwtTokenHandler = new JwtSecurityTokenHandler();
-        
+
         var key = Encoding.UTF8.GetBytes(_configuration.GetSection("JwtConfig:Secret").Value);
 
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
-            Subject = new ClaimsIdentity(new []
+            Subject = new ClaimsIdentity(new[]
             {
                 new Claim("Id", user.Id),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Email, value:user.Email),
+                new Claim(JwtRegisteredClaimNames.Email, value: user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToUniversalTime().ToString())
             }),
-            
+
             Expires = DateTime.Now.AddHours(1),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
@@ -148,7 +107,7 @@ public class AuthenticationController : ControllerBase
 
         var token = jwtTokenHandler.CreateToken(tokenDescriptor);
         var jwtToken = jwtTokenHandler.WriteToken(token);
-        
+
         return jwtToken;
     }
 }

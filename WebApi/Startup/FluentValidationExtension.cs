@@ -10,5 +10,6 @@ public static class FluentValidationExtension
     {
         services.AddValidatorsFromAssembly(assembly);
         services.AddFluentValidationAutoValidation();
+        ValidatorOptions.Global.LanguageManager.Enabled = false;
     }
 }
