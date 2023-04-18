@@ -33,3 +33,7 @@ JWT was implemented by symmetric key that is stored in appsettings.json (NOT FOR
 On production stage this key is normally stored in Azure Key Vault or another simillar cloud technologies.
 
 Application can be tested in Postman with such http requests like: https://localhost:7034/Book/GetAllBooks
+
+If we want to access program from docker, we use localhost:5000.
+
+Database connection - Username: admin Password: 123
